@@ -1,6 +1,7 @@
 package kz.shag.myshopping.entity;
 
 public class Product {
+    private int id;
     private String title;
     private String description;
     private double cost;
@@ -9,6 +10,15 @@ public class Product {
 
     public Product() {
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public String getTitle() {
         return title;
