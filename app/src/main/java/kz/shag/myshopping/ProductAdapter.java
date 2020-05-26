@@ -1,3 +1,4 @@
+/*
 package kz.shag.myshopping;
 
 import android.content.Context;
@@ -15,7 +16,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     Context context;
 
-    public ProductAdapter(Context ct,)
+    //public ProductAdapter(Context ct,)
 
     @NonNull
     @Override
@@ -53,3 +54,4 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 }
+*/

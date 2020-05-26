@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">MyShopping</string>
-    <string name="address">Address</string>
-    <string name="phone_number">Phone number</string>
-    <string name="purchase">Purchase</string>
+    <string name="app_name">MAXFPS</string>
+    <string name="address">Adres</string>
+    <string name="phone_number" >88005553535</string>
+    <string name="purchase" >Купить</string>
+    <string name="action_settings" >Settings</string>
+    <string name="action_search" >Search</string>
+
 </resources>
