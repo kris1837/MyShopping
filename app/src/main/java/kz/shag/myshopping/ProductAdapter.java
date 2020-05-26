@@ -11,11 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import kz.shag.myshopping.entity.Product;
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     Context context;
+    List<Product> products;
 
-    public ProductAdapter(Context ct,)
+    public ProductAdapter(Context context,List<Product> products){
+        this.context = context;
+        this.products = products;
+    }
 
     @NonNull
     @Override
@@ -28,7 +36,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.priceTextView.setText();
+        holder.priceTextView.setText(Double.toString(products.get(position).getCost()));
+        holder.nameTextView.setText(products.get(position).getTitle());
+        //Uncommit after importing glide
+        //Glide.with(this).load("http://goo.gl/gEgYUd").into(holder.productImageView);
     }
 
     @Override
