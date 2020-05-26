@@ -1,11 +1,22 @@
 package kz.shag.myshopping.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Product {
+    @PrimaryKey
     private int id;
+    @ColumnInfo(name = "title")
     private String title;
+    @ColumnInfo(name = "description")
     private String description;
+    @ColumnInfo(name = "cost")
     private double cost;
+    @ColumnInfo(name = "image_url")
     private String imageUrl;
+    @ColumnInfo(name = "quantity")
     private int quantity;
 
     public Product() {
