@@ -3,6 +3,7 @@ package kz.shag.myshopping.dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -13,10 +14,10 @@ import kz.shag.myshopping.entity.Product;
 @Dao
 public interface ProductDao {
 
-    @Query("SELECT * FROM product")
+    @Query("SELECT * FROM products")
     List<Product> getAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertProduct(Product product);
 
     @Update
@@ -25,9 +26,9 @@ public interface ProductDao {
     @Delete
     void deleteProduct(Product product);
 
-    @Query("SELECT * FROM product WHERE id = (:id)")
+    @Query("SELECT * FROM products WHERE id = (:id)")
     Product findProduct(int id);
 
-    @Query("SELECT * FROM product WHERE title = (:title)")
+    @Query("SELECT * FROM products WHERE title = (:title)")
     Product findProduct(String title);
 }
