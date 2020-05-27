@@ -1,4 +1,4 @@
-package kz.shag.myshopping;
+package kz.shag.myshopping.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import kz.shag.myshopping.R;
 import kz.shag.myshopping.validators.TextValidator;
 
 public class PurchaseDataActivity extends AppCompatActivity {
