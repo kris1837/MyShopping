@@ -1,5 +1,6 @@
 package kz.shag.myshopping.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -36,9 +37,13 @@ public class MainActivity extends AppCompatActivity {
         products.add(new Product("Title","Description",2.3,"none",3));
         products.add(new Product("Title","Description",2.3,"none",3));
         products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
         //
 
-        ProductAdapter productAdapter = new ProductAdapter(this, products);
+        ProductAdapter productAdapter = new ProductAdapter(products);
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 /*
