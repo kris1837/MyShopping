@@ -1,6 +1,5 @@
 package kz.shag.myshopping.activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import kz.shag.myshopping.ProductAdapter;
+import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
 

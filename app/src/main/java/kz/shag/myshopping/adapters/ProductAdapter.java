@@ -1,4 +1,4 @@
-package kz.shag.myshopping;
+package kz.shag.myshopping.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
