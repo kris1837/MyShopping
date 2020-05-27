@@ -1,5 +1,6 @@
 package kz.shag.myshopping;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.priceTextView.setText(Double.toString(products.get(position).getCost()));
@@ -59,8 +61,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             priceTextView = itemView.findViewById(R.id.textViewPrice);
             buyButton = itemView.findViewById(R.id.buttonBuy);
             productImageView = itemView.findViewById(R.id.imageViewProduct);
-
-
         }
     }
 }

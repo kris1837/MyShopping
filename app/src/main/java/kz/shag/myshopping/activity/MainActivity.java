@@ -33,13 +33,17 @@ public class MainActivity extends AppCompatActivity {
 
         //data from Firebase
         List<Product> products = new ArrayList<Product>();
+        products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
+        products.add(new Product("Title","Description",2.3,"none",3));
         //
 
         ProductAdapter productAdapter = new ProductAdapter(this, products);
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        //getSupportActionBar().setCustomView(R.layout.activity_main);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.activity_main);
     }
 }
