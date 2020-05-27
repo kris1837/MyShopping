@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "products")
 public class Product implements Parcelable {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "title")
     private String title;
