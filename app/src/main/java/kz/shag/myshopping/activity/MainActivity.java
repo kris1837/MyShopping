@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         ProductAdapter productAdapter = new ProductAdapter(this, products);
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+/*
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.activity_main);
+        getSupportActionBar().setCustomView(R.layout.activity_main);*/
     }
 }

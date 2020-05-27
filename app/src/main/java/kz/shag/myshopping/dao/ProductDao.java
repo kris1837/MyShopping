@@ -1,5 +1,6 @@
 package kz.shag.myshopping.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,7 +16,7 @@ import kz.shag.myshopping.entity.Product;
 public interface ProductDao {
 
     @Query("SELECT * FROM products")
-    List<Product> getAll();
+    LiveData<List<Product>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertProduct(Product product);
@@ -27,8 +28,8 @@ public interface ProductDao {
     void deleteProduct(Product product);
 
     @Query("SELECT * FROM products WHERE id = (:id)")
-    Product findProduct(int id);
+    LiveData<Product> findProduct(int id);
 
     @Query("SELECT * FROM products WHERE title = (:title)")
-    Product findProduct(String title);
+    LiveData<Product> findProduct(String title);
 }
