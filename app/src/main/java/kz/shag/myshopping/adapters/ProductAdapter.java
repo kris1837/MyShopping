@@ -22,15 +22,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     Context context;
     List<Product> products;
 
-    public ProductAdapter(Context context,List<Product> products){
-        this.context = context;
+    public ProductAdapter(List<Product> products){
         this.products = products;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        this.context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.row,parent,false);
 
         return new ViewHolder(view);
@@ -47,7 +47,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 0;
+        return products.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
