@@ -5,26 +5,33 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "products")
 public class Product implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     @ColumnInfo(name = "title")
     private String title;
+
     @ColumnInfo(name = "description")
     private String description;
+
     @ColumnInfo(name = "cost")
     private double cost;
+
     @ColumnInfo(name = "image_url")
     private String imageUrl;
+
     @ColumnInfo(name = "quantity")
     private int quantity;
 
     public Product() {
     }
 
+    @Ignore
     public Product(String title, String description, double cost, String imageUrl, int quantity){
         this.title = title;
         this.description = description;
@@ -32,7 +39,7 @@ public class Product implements Parcelable {
         this.imageUrl = imageUrl;
         this.quantity = quantity;
     }
-
+    @Ignore
     protected Product(Parcel in) {
         id = in.readInt();
         title = in.readString();
@@ -41,7 +48,7 @@ public class Product implements Parcelable {
         imageUrl = in.readString();
         quantity = in.readInt();
     }
-
+    @Ignore
     public static final Creator<Product> CREATOR = new Creator<Product>() {
         @Override
         public Product createFromParcel(Parcel in) {
@@ -61,7 +68,6 @@ public class Product implements Parcelable {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getTitle() {
         return title;
@@ -103,11 +109,12 @@ public class Product implements Parcelable {
         this.quantity = quantity;
     }
 
+    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
-
+    @Ignore
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);

@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import kz.shag.myshopping.dao.ProductDao;
 import kz.shag.myshopping.entity.Product;
 
-@Database(entities = {Product.class}, version = 1)
+@Database(entities = {Product.class}, version = 2)
 public abstract class LocalDataBase extends RoomDatabase {
     private static final String DB_NAME  = "cart_db";
     private static LocalDataBase instance;
