@@ -15,15 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import kz.shag.myshopping.R;
+import kz.shag.myshopping.activity.IProductClickListener;
 import kz.shag.myshopping.entity.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     Context context;
     List<Product> products;
+    IProductClickListener callback;
 
-    public ProductAdapter(List<Product> products){
+    public ProductAdapter(List<Product> products,IProductClickListener callback){
         this.products = products;
+        this.callback = callback;
     }
 
     @NonNull
@@ -39,8 +42,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Product product = products.get(position);
         holder.priceTextView.setText(Double.toString(products.get(position).getCost()));
         holder.nameTextView.setText(products.get(position).getTitle());
+        holder.buyButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                callback.onClick(product);
+            }
+        });
+
+
         //Uncommit after importing glide
         //Glide.with(this).load("http://goo.gl/gEgYUd").into(holder.productImageView);
     }
