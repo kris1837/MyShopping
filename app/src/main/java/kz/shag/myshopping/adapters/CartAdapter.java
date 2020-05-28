@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +19,18 @@ import kz.shag.myshopping.entity.Product;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
+    public interface OnCartAdapterEventListener{
+        public void onPlusButtonClick(Product product);
+        public void onMinusButtonClick(Product product);
+        public void onDeleteButtonClick(Product product);
+    }
+
     private List<Product> mProducts;
+    private OnCartAdapterEventListener listener;
+
+    public void setListener(OnCartAdapterEventListener listener){
+        this.listener = listener;
+    }
 
     public CartAdapter(List<Product> products){
         mProducts = products;
@@ -36,19 +48,39 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         Product product = mProducts.get(position);
 
         TextView itemNameTextView = holder.itemNameTextView;
         itemNameTextView.setText(product.getTitle());
 
         TextView itemPriceTextView = holder.itemPriceTextView;
-        itemPriceTextView.setText((int) product.getCost());
+        itemPriceTextView.setText(Double.toString(product.getCost()));
 
         TextView itemCountTextView = holder.itemCountTextView;
         itemCountTextView.setText(product.getQuantity());
 
         ImageView itemImageView = holder.itemImageView;
         //нужно загружать из product.getImageUri
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btn = (Button)v;
+
+                switch(btn.getId()) {
+                    case R.id.plusItemButton:
+                        listener.onPlusButtonClick(product);
+                        break;
+                    case R.id.minusItemButton:
+                        listener.onMinusButtonClick(product);
+                        break;
+                    case R.id.deleteItemButton:
+                        listener.onDeleteButtonClick(product);
+                        break;
+                }
+            }
+        });
     }
 
     @Override

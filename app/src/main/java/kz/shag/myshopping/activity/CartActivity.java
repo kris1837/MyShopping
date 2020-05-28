@@ -1,6 +1,7 @@
 package kz.shag.myshopping.activity;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,12 +20,13 @@ import kz.shag.myshopping.localDB.LocalDataBase;
 import kz.shag.myshopping.localDB.ProductRepository;
 
 public class CartActivity extends AppCompatActivity {
-private ProductRepository productRepository;
+    private ProductRepository productRepository;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
         final RecyclerView rvCart = findViewById(R.id.rvCart);
+
 
         productRepository = new ProductRepository(this);
         Initializer.Init(productRepository);
@@ -38,8 +40,34 @@ private ProductRepository productRepository;
                 CartAdapter adapter = new CartAdapter(products);
                 rvCart.setAdapter(adapter);
                 rvCart.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                adapter.setListener(new CartAdapter.OnCartAdapterEventListener() {
+                    @Override
+                    public void onPlusButtonClick(Product product) { //if plus button pressed
+                        product.setQuantity(product.getQuantity() + 1);
+                    }
+
+                    @Override
+                    public void onMinusButtonClick(Product product) { //if minus button pressed
+                        if((product.getQuantity() - 1) > 0)
+                            product.setQuantity(product.getQuantity() - 1);
+                    }
+
+                    @Override
+                    public void onDeleteButtonClick(Product product) { //if delete button pressed
+                        if (products != null) {
+                            products.remove(product);
+                        }
+                    }
+                });
+
+                Button purchaseBtn = findViewById(R.id.purchaseBtn);
+                purchaseBtn.setOnClickListener(v -> {
+                    //переход на оплату
+                });
             }
         });
+
 
     }
 
