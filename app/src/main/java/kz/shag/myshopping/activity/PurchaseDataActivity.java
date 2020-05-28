@@ -1,5 +1,6 @@
 package kz.shag.myshopping.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +10,23 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import kz.shag.myshopping.R;
+import kz.shag.myshopping.entity.Product;
+import kz.shag.myshopping.entity.Purchase;
 import kz.shag.myshopping.validators.TextValidator;
 
 public class PurchaseDataActivity extends AppCompatActivity {
     private final String APP_PREFERENCES = "purchase_preferences";
     private final String APP_PREFERENCES_ADDRESS = "Address";
     private final String APP_PREFERENCES_PHONE = "Phone";
+
+    private List<Product> productList;
 
     private EditText addressEditText;
     private EditText phoneEditText;
@@ -27,6 +38,10 @@ public class PurchaseDataActivity extends AppCompatActivity {
 
         addressEditText = findViewById(R.id.address);
         phoneEditText = findViewById(R.id.phone);
+
+        Intent intent = getIntent();
+        productList = intent.getParcelableArrayListExtra("products");
+        if (productList == null) productList = new ArrayList<>();
 
         TextValidator textValidator = new TextValidator(addressEditText) {
             @Override
@@ -53,5 +68,18 @@ public class PurchaseDataActivity extends AppCompatActivity {
         ed.putString(APP_PREFERENCES_ADDRESS, addressEditText.getText().toString());
         ed.putString(APP_PREFERENCES_PHONE, phoneEditText.getText().toString());
         ed.apply();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Purchase purchase = new Purchase();
+        purchase.setAddress(addressEditText.getText().toString());
+        purchase.setPhoneNumber(phoneEditText.getText().toString());
+        purchase.setProducts(productList);
+        double costSum = 0;
+        for (Product product: productList) {
+            costSum += product.getCost();
+        }
+        purchase.setFinalCost(costSum);
+        db.collection("purchases").document(UUID.randomUUID().toString()).set(purchase);
     }
 }
