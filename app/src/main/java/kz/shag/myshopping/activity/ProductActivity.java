@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import kz.shag.myshopping.R;
 
 public class ProductActivity extends AppCompatActivity {
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

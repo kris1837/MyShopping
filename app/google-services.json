@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "757141734858",
+    "firebase_url": "https://shagshopping.firebaseio.com",
+    "project_id": "shagshopping",
+    "storage_bucket": "shagshopping.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757141734858:android:35b8895afb92a4c670bb33",
+        "android_client_info": {
+          "package_name": "kz.shag.myshopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757141734858-tn193vqofsadltfscr1amm51ar6cp430.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZPTr-m5jDvoOiN725-cB2MIg2a6dBalE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757141734858-tn193vqofsadltfscr1amm51ar6cp430.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
