@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
+import kz.shag.myshopping.localDB.ProductRepository;
 
 public class MainActivity extends AppCompatActivity implements IProductClickListener{
 
     RecyclerView recyclerView;
+    private ProductRepository productRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,5 +57,9 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
     @Override
     public void onClick(Product product) {
         Toast.makeText(this, product.getTitle(), Toast.LENGTH_SHORT).show();
+        if(productRepository == null){
+            productRepository = new ProductRepository(this);
+        }
+        productRepository.insertProduct(product);
     }
 }
