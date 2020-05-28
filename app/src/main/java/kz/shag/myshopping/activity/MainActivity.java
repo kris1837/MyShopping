@@ -4,7 +4,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
+import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.ProductRepository;
 
 public class MainActivity extends AppCompatActivity implements IProductClickListener{
@@ -52,6 +56,15 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 /*
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.activity_main);*/
+
+        ImageButton uiToCart = findViewById(R.id.uiToCart);
+        final Activity activity = this;
+        uiToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationHelper.goToCart(activity);
+            }
+        });
     }
 
     @Override

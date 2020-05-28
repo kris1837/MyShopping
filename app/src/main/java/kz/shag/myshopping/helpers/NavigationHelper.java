@@ -1,5 +1,7 @@
 package kz.shag.myshopping.helpers;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,7 +28,7 @@ public class NavigationHelper {
         context.startActivity(intent);
     }
 
-    public static void goToCart(AppCompatActivity context) {
+    public static void goToCart(Activity context) {
         Intent intent = new Intent(context, CartActivity.class);
         context.startActivity(intent);
     }

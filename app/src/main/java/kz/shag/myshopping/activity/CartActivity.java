@@ -13,18 +13,22 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.adapters.CartAdapter;
 import kz.shag.myshopping.adapters.OnCartAdapterEventListener;
 import kz.shag.myshopping.entity.Product;
+import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.Initializer;
 import kz.shag.myshopping.localDB.LocalDataBase;
 import kz.shag.myshopping.localDB.ProductRepository;
 
 public class CartActivity extends AppCompatActivity implements OnCartAdapterEventListener, View.OnClickListener {
     private ProductRepository productRepository;
+
+    List<Product> productArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
         purchaseBtn.setOnClickListener(this);
 
         productRepository = new ProductRepository(this);
-        Initializer.Init(productRepository);
+        //Initializer.Init(productRepository);
         //load data from local db
         LiveData<List<Product>> liveData = LocalDataBase.getInstance(this).productDao().getAll();
         final OnCartAdapterEventListener listener = this;
@@ -49,6 +53,7 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
             @Override
             public void onChanged(@Nullable List<Product> products) {
                 //add to recycler view - Alibi
+                productArrayList = products;
                 CartAdapter adapter = new CartAdapter();
                 adapter.setmProducts(products);
                 adapter.setListener(listener);
@@ -85,6 +90,6 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getApplicationContext(), "purchase", Toast.LENGTH_SHORT).show();
+        NavigationHelper.goToPurchase(this, (ArrayList<Product>) productArrayList);
     }
 }
