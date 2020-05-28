@@ -27,7 +27,7 @@ private ProductRepository productRepository;
         final RecyclerView rvCart = findViewById(R.id.rvCart);
 
         productRepository = new ProductRepository(this);
-        //Initializer.Init(productRepository);
+        Initializer.Init(productRepository);
         //load data from local db
         LiveData<List<Product>> liveData = LocalDataBase.getInstance(this).productDao().getAll();
 
