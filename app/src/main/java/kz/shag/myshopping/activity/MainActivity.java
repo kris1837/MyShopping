@@ -35,7 +35,7 @@ import kz.shag.myshopping.entity.Product;
 import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.ProductRepository;
 
-public class MainActivity extends AppCompatActivity implements IProductClickListener{
+public class MainActivity extends AppCompatActivity implements IProductClickListener {
 
     RecyclerView recyclerView;
     private ProductRepository productRepository;
@@ -56,17 +56,17 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
         //data from Firebase
         List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1, "A","Description",2.3,"none",3));
-        products.add(new Product(2, "B","Description",2.3,"none",3));
-        products.add(new Product(3, "C","Description",2.3,"none",3));
-        products.add(new Product(4, "D","Description",2.3,"none",3));
-        products.add(new Product(5, "E","Description",2.3,"none",3));
-        products.add(new Product(6, "F","Description",2.3,"none",3));
-        products.add(new Product(7, "G","Description",2.3,"none",3));
-        products.add(new Product(8, "H","Description",2.3,"none",3));
+        products.add(new Product(1, "A", "Description", 2.3, "none", 3));
+        products.add(new Product(2, "B", "Description", 2.3, "none", 3));
+        products.add(new Product(3, "C", "Description", 2.3, "none", 3));
+        products.add(new Product(4, "D", "Description", 2.3, "none", 3));
+        products.add(new Product(5, "E", "Description", 2.3, "none", 3));
+        products.add(new Product(6, "F", "Description", 2.3, "none", 3));
+        products.add(new Product(7, "G", "Description", 2.3, "none", 3));
+        products.add(new Product(8, "H", "Description", 2.3, "none", 3));
         //
 
-        ProductAdapter productAdapter = new ProductAdapter(products,this);
+        ProductAdapter productAdapter = new ProductAdapter(products, this);
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 /*
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
     @Override
     public void onClick(Product product) {
-        if(productRepository == null){
+        if (productRepository == null) {
             productRepository = new ProductRepository(this);
         }
         LiveData<Product> liveData = productRepository.getById(product.getId());
@@ -93,17 +93,13 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
             //here come product by id
             @Override
             public void onChanged(Product liveProduct) {
-                if(product == null){
+                if(liveProduct == null){
                     productRepository.insertProduct(product);
                 }
                 else{
-                    if(liveProduct.getId() == product.getId()){
-                        liveProduct.setQuantity(liveProduct.getQuantity() + 1);
-                        productRepository.updateProduct(liveProduct);
-                    }else{
-                        productRepository.insertProduct(product);
-                    }
-                }
+                    liveProduct.setQuantity(liveProduct.getQuantity() + 1);
+                    productRepository.updateProduct(liveProduct);
+                } 
             }
         });
 
@@ -154,6 +150,6 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
     private void doSearch(String queryStr) {
         Toast.makeText(this, queryStr, Toast.LENGTH_LONG).show();
-        Log.i("Your search: ",queryStr);
+        Log.i("Your search: ", queryStr);
     }
 }
