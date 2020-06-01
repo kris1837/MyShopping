@@ -39,7 +39,7 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
         purchaseBtn.setOnClickListener(this);
 
         productRepository = new ProductRepository(this);
-        //Initializer.Init(productRepository);
+
         //load data from local db
         LiveData<List<Product>> liveData = LocalDataBase.getInstance(this).productDao().getAll();
         final OnCartAdapterEventListener listener = this;
@@ -66,12 +66,6 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
     }
 
 
-
-    @Override
-    protected void onStop() {
-        //close connection with local db
-        super.onStop();
-    }
 
     @Override
     public void onPlusButtonClick(Product product) {

@@ -5,19 +5,18 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:padding ="10dp"
     >
 
     <ImageView
         android:id="@+id/itemImageView"
-        android:layout_width="163dp"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -27,26 +26,22 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Название"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:layout_margin="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/itemPriceTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/itemCountTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:text="Price"
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
@@ -68,6 +63,14 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="+" />
+
+            <TextView
+                android:id="@+id/itemCountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Count"
+                android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/minusItemButton"
