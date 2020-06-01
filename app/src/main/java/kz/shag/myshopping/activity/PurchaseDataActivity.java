@@ -1,5 +1,6 @@
 package kz.shag.myshopping.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,6 +21,7 @@ import java.util.UUID;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
 import kz.shag.myshopping.entity.Purchase;
+import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.validators.TextValidator;
 
 public class PurchaseDataActivity extends AppCompatActivity {
@@ -81,5 +84,20 @@ public class PurchaseDataActivity extends AppCompatActivity {
         }
         purchase.setFinalCost(costSum);
         db.collection("purchases").document(UUID.randomUUID().toString()).set(purchase);
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Order successfully placed")
+               .setTitle("Successfully");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                onPositiveButtonClick();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void onPositiveButtonClick() {
+        NavigationHelper.goToMainActivity(this);
     }
 }
