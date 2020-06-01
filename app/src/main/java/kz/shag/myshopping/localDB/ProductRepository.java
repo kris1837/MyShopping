@@ -18,8 +18,12 @@ public class ProductRepository {
                 .getInstance(context).productDao();
     }
 
-    LiveData<List<Product>> getAllProducts(){
+    public LiveData<List<Product>> getAllProducts(){
         return productDao.getAll();
+    }
+
+    public LiveData<Product> getById(int id){
+        return productDao.findProduct(id);
     }
 
     public void updateProduct(Product product){
@@ -33,6 +37,8 @@ public class ProductRepository {
     public void insertProduct(Product product){
         new insertAsyncTask(productDao).execute(product);
     }
+
+
 
     private static class insertAsyncTask extends AsyncTask<Product, Void, Void> {
         private ProductDao productDao;

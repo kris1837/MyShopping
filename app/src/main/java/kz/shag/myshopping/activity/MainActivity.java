@@ -1,6 +1,7 @@
 package kz.shag.myshopping.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,8 +23,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import kz.shag.myshopping.adapters.CartAdapter;
 import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
@@ -51,14 +56,14 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
         //data from Firebase
         List<Product> products = new ArrayList<Product>();
-        products.add(new Product("A","Description",2.3,"none",3));
-        products.add(new Product("B","Description",2.3,"none",3));
-        products.add(new Product("C","Description",2.3,"none",3));
-        products.add(new Product("D","Description",2.3,"none",3));
-        products.add(new Product("E","Description",2.3,"none",3));
-        products.add(new Product("F","Description",2.3,"none",3));
-        products.add(new Product("G","Description",2.3,"none",3));
-        products.add(new Product("H","Description",2.3,"none",3));
+        products.add(new Product(1, "A","Description",2.3,"none",3));
+        products.add(new Product(2, "B","Description",2.3,"none",3));
+        products.add(new Product(3, "C","Description",2.3,"none",3));
+        products.add(new Product(4, "D","Description",2.3,"none",3));
+        products.add(new Product(5, "E","Description",2.3,"none",3));
+        products.add(new Product(6, "F","Description",2.3,"none",3));
+        products.add(new Product(7, "G","Description",2.3,"none",3));
+        products.add(new Product(8, "H","Description",2.3,"none",3));
         //
 
         ProductAdapter productAdapter = new ProductAdapter(products,this);
@@ -80,11 +85,24 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
     @Override
     public void onClick(Product product) {
-        Toast.makeText(this, product.getTitle(), Toast.LENGTH_SHORT).show();
         if(productRepository == null){
             productRepository = new ProductRepository(this);
         }
-        productRepository.insertProduct(product);
+        LiveData<Product> liveData = productRepository.getById(product.getId());
+        liveData.observe(this, new Observer<Product>() {
+            //here come product by id
+            @Override
+            public void onChanged(Product liveProduct) {
+                if(liveProduct.getId() == product.getId()){
+                    liveProduct.setQuantity(liveProduct.getQuantity() + 1);
+                    productRepository.updateProduct(liveProduct);
+                }else{
+                    productRepository.insertProduct(product);
+                }
+
+            }
+        });
+
     }
 
     @Override
