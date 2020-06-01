@@ -93,13 +93,17 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
             //here come product by id
             @Override
             public void onChanged(Product liveProduct) {
-                if(liveProduct.getId() == product.getId()){
-                    liveProduct.setQuantity(liveProduct.getQuantity() + 1);
-                    productRepository.updateProduct(liveProduct);
-                }else{
+                if(product == null){
                     productRepository.insertProduct(product);
                 }
-
+                else{
+                    if(liveProduct.getId() == product.getId()){
+                        liveProduct.setQuantity(liveProduct.getQuantity() + 1);
+                        productRepository.updateProduct(liveProduct);
+                    }else{
+                        productRepository.insertProduct(product);
+                    }
+                }
             }
         });
 
