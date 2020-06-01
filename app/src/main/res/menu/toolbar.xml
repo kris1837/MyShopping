@@ -3,18 +3,20 @@
     xmlns:myApp="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
+
     tools:context="com.example.myfirstapp.MainActivity" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        myApp:showAsAction="never"/>
     <item
         android:id="@+id/action_search"
         android:title="@string/action_search"
         android:icon="@drawable/search"
         myApp:showAsAction="always"
         myApp:actionViewClass="android.widget.SearchView" />
+    <item
+        android:id="@+id/action_bin"
+        android:title="@string/action_bin"
+        android:icon="@drawable/basket"
+        myApp:showAsAction="always"
+         />
 
 </menu>
