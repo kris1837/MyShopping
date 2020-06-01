@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         recyclerView = findViewById(R.id.recyclerView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         toolbar.setTitle("Товары");
         toolbar.setSubtitleTextColor(R.color.white);
         setSupportActionBar(toolbar);
@@ -73,14 +74,6 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.activity_main);*/
 
-        ImageButton uiToCart = findViewById(R.id.uiToCart);
-        final Activity activity = this;
-        uiToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavigationHelper.goToCart(activity);
-            }
-        });
     }
 
     @Override
@@ -127,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
             case R.id.action_search:
                 doSearch(SearchManager.QUERY);
                 break;
+            case R.id.action_bin:
+                final Activity activity = this;
+                NavigationHelper.goToCart(activity);
             default:
                 return super.onOptionsItemSelected(item);
         }
