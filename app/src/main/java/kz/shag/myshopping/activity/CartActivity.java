@@ -66,20 +66,21 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
     }
 
 
-
     @Override
     public void onPlusButtonClick(Product product) {
-        Toast.makeText(getApplicationContext(), "onPlusButtonClick", Toast.LENGTH_SHORT).show();
+        product.setQuantity(product.getQuantity() + 1);
+        productRepository.updateProduct(product);
     }
 
     @Override
     public void onMinusButtonClick(Product product) {
-        Toast.makeText(getApplicationContext(), "onMinusButtonClick", Toast.LENGTH_SHORT).show();
+        product.setQuantity(product.getQuantity() - 1);
+        productRepository.updateProduct(product);
     }
 
     @Override
     public void onDeleteButtonClick(Product product) {
-        Toast.makeText(getApplicationContext(), "onDeleteButtonClick", Toast.LENGTH_SHORT).show();
+        productRepository.deleteProduct(product);
     }
 
     @Override
