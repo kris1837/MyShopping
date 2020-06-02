@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.activity.CartActivity;
-import kz.shag.myshopping.dao.ProductDao;
 import kz.shag.myshopping.entity.Product;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
@@ -112,22 +110,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             plusButton = itemView.findViewById(R.id.plusItemButton);
             minusButton = itemView.findViewById(R.id.minusItemButton);
             deleteButton = itemView.findViewById(R.id.deleteItemButton);
-        }
-    }
-
-    private static class updateAsyncTask extends AsyncTask<ImageView, Void, Void> {
-        private CartActivity listener;
-        private String imageUrl;
-
-        public updateAsyncTask(CartActivity listenerm, String imageUrl){
-            this.imageUrl = imageUrl;
-            this.listener = listener;
-        }
-
-        @Override
-        protected Void doInBackground(ImageView... imageViews) {
-            Glide.with((CartActivity) listener).load(imageUrl).centerCrop().into(imageViews[0]);
-            return null;
         }
     }
 }
