@@ -8,6 +8,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.PropertyName;
+
 @Entity(tableName = "products")
 public class Product implements Parcelable {
     @PrimaryKey(autoGenerate = true)
@@ -23,6 +25,7 @@ public class Product implements Parcelable {
     private double cost;
 
     @ColumnInfo(name = "image_url")
+    @PropertyName("image_url")
     private String imageUrl;
 
     @ColumnInfo(name = "quantity")

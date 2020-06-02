@@ -12,10 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.activity.IProductClickListener;
+import kz.shag.myshopping.activity.MainActivity;
+import kz.shag.myshopping.activity.ProductActivity;
 import kz.shag.myshopping.entity.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
@@ -51,9 +55,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             }
         });
 
-
-        //Uncommit after importing glide
-        //Glide.with(this).load("http://goo.gl/gEgYUd").into(holder.productImageView);
+        Glide.with(context).load(products.get(position).getImageUrl()).into(holder.productImageView);
     }
 
     @Override

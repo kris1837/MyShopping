@@ -62,8 +62,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         itemCountTextView.setText(String.valueOf(product.getQuantity()));
 
         ImageView itemImageView = holder.itemImageView;
+
         if(product.getImageUrl() != ""){
-            //new updateAsyncTask((CartActivity) listener, product.getImageUrl()).execute(itemImageView);
+            Glide.with((CartActivity) listener).load(product.getImageUrl()).into(itemImageView);
         }
 
         holder.plusButton.setOnClickListener(new View.OnClickListener() {

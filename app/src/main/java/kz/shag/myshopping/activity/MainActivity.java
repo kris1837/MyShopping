@@ -28,10 +28,13 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import kz.shag.myshopping.adapters.CartAdapter;
 import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
+import kz.shag.myshopping.entity.Purchase;
 import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.ProductRepository;
 
@@ -40,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
     RecyclerView recyclerView;
     private ProductRepository productRepository;
     private List<Product> mProducts;
+
+    private final String TAG = "MainActivity";
+
+    List<Product> products = new ArrayList<Product>();
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -56,20 +63,34 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         setSupportActionBar(toolbar);
 
         //data from Firebase
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1, "A", "Description", 2.3, "none", 3));
-        products.add(new Product(2, "B", "Description", 2.3, "none", 3));
-        products.add(new Product(3, "C", "Description", 2.3, "none", 3));
-        products.add(new Product(4, "D", "Description", 2.3, "none", 3));
-        products.add(new Product(5, "E", "Description", 2.3, "none", 3));
-        products.add(new Product(6, "F", "Description", 2.3, "none", 3));
-        products.add(new Product(7, "G", "Description", 2.3, "none", 3));
-        products.add(new Product(8, "H", "Description", 2.3, "none", 3));
+
+        getProducts();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("products").get()
+                .addOnSuccessListener(documentSnapshots -> {
+                    if (!documentSnapshots.isEmpty()) {
+                        List<Product> productsFromDb = documentSnapshots.toObjects(Product.class);
+                        products.addAll(productsFromDb);
+                        Log.d(TAG, "onSuccess: " + products.get(0).getTitle());
+
+                        ProductAdapter productAdapter = new ProductAdapter(products, this);
+                        recyclerView.setAdapter(productAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    }
+                });
+
+//        products.add(new Product(1, "A", "Description", 2.3, "none", 3));
+//        products.add(new Product(2, "B", "Description", 2.3, "none", 3));
+//        products.add(new Product(3, "C", "Description", 2.3, "none", 3));
+//        products.add(new Product(4, "D", "Description", 2.3, "none", 3));
+//        products.add(new Product(5, "E", "Description", 2.3, "none", 3));
+//        products.add(new Product(6, "F", "Description", 2.3, "none", 3));
+//        products.add(new Product(7, "G", "Description", 2.3, "none", 3));
+//        products.add(new Product(8, "H", "Description", 2.3, "none", 3));
         //
 
-        ProductAdapter productAdapter = new ProductAdapter(products, this);
-        recyclerView.setAdapter(productAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 /*
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.activity_main);*/
@@ -156,5 +177,9 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
     private void doSearch(String queryStr) {
         Toast.makeText(this, queryStr, Toast.LENGTH_LONG).show();
         Log.i("Your search: ", queryStr);
+    }
+
+    private void getProducts() {
+
     }
 }

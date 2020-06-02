@@ -32,6 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+
         //закоментировал чтобы не было ошибки
         //phoneNumber = findViewById(R.id.phone_number);
     }
