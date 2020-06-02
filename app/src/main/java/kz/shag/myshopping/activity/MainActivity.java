@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         recyclerView = findViewById(R.id.recyclerView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         toolbar.setTitle("Товары");
         toolbar.setSubtitleTextColor(R.color.white);
         setSupportActionBar(toolbar);
@@ -122,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
                 break;
             case R.id.action_bin:
                 final Activity activity = this;
-                NavigationHelper.goToCart(activity);
+                NavigationHelper.goToCart(MainActivity.this);
             default:
                 return super.onOptionsItemSelected(item);
         }

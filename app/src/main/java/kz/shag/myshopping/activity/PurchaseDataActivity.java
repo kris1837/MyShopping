@@ -1,16 +1,20 @@
 package kz.shag.myshopping.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,6 +38,7 @@ public class PurchaseDataActivity extends AppCompatActivity {
     private EditText addressEditText;
     private EditText phoneEditText;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,15 @@ public class PurchaseDataActivity extends AppCompatActivity {
 
         addressEditText = findViewById(R.id.address);
         phoneEditText = findViewById(R.id.phone);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Оплата");
+        toolbar.setSubtitleTextColor(R.color.white);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
 
         Intent intent = getIntent();
         productList = intent.getParcelableArrayListExtra("products");
@@ -60,6 +74,14 @@ public class PurchaseDataActivity extends AppCompatActivity {
         SharedPreferences sPref = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         addressEditText.setText(sPref.getString(APP_PREFERENCES_ADDRESS, ""));
         phoneEditText.setText(sPref.getString(APP_PREFERENCES_PHONE, ""));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void purchase(View view) {
