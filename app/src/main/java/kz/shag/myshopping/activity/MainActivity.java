@@ -119,10 +119,15 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         }
 
         if(cartProd != null){
-            cartProd.setQuantity(cartProd.getQuantity() + 1);
+            int count = cartProd.getQuantity();
+            cartProd.setQuantity(count + 1);
             productRepository.updateProduct(cartProd);
         }
         else{
+            int count = product.getQuantity();
+            if(count != 1){
+                product.setQuantity( 1 );
+            }
             productRepository.insertProduct(product);
         }
 
