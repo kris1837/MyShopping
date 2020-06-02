@@ -1,13 +1,24 @@
 package kz.shag.myshopping.activity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +41,7 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
 
     List<Product> productArrayList = new ArrayList<>();
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +49,14 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
         final RecyclerView recyclerView = findViewById(R.id.rvCart);
         Button purchaseBtn = findViewById(R.id.purchaseBtn);
         purchaseBtn.setOnClickListener(this);
+
+        Toolbar toolbar = findViewById(R.id.cart_toolbar);
+        toolbar.setTitle("Корзина");
+        toolbar.setSubtitleTextColor(R.color.white);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         productRepository = new ProductRepository(this);
 
@@ -63,6 +83,41 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.cart_toolbar, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doSearch(query);
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+        super.onNewIntent(intent);
+    }
+
+    private void doSearch(String queryStr) {
+        Toast.makeText(this, queryStr, Toast.LENGTH_LONG).show();
+        Log.i("Your search: ",queryStr);
     }
 
 
