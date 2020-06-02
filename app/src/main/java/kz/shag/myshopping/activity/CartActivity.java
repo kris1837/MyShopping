@@ -74,8 +74,12 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
 
     @Override
     public void onMinusButtonClick(Product product) {
-        product.setQuantity(product.getQuantity() - 1);
-        productRepository.updateProduct(product);
+        if(product.getQuantity() > 1){
+            product.setQuantity(product.getQuantity() - 1);
+            productRepository.updateProduct(product);
+        }else{
+            productRepository.deleteProduct(product);
+        }
     }
 
     @Override
