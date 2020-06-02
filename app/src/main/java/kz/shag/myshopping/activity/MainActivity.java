@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
     RecyclerView recyclerView;
     private ProductRepository productRepository;
+    private List<Product> mProducts;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -73,27 +74,36 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.activity_main);*/
 
+        if (productRepository == null) {
+            productRepository = new ProductRepository(this);
+        }
+
+        LiveData<List<Product>> liveData = productRepository.getAllProducts();
+        liveData.observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                mProducts = products;
+            }
+        });
     }
 
     @Override
     public void onClick(Product product) {
-        if (productRepository == null) {
-            productRepository = new ProductRepository(this);
-        }
-        LiveData<Product> liveData = productRepository.getById(product.getId());
-        liveData.observe(this, new Observer<Product>() {
-            //here come product by id
-            @Override
-            public void onChanged(Product liveProduct) {
-                if(liveProduct == null){
-                    productRepository.insertProduct(product);
-                }
-                else{
-                    liveProduct.setQuantity(liveProduct.getQuantity() + 1);
-                    productRepository.updateProduct(liveProduct);
-                } 
+        Product cartProd = null;
+        for (int i =0; i< mProducts.size(); i++){
+            if(product.getId() == mProducts.get(i).getId()){
+                cartProd = mProducts.get(i);
+                break;
             }
-        });
+        }
+
+        if(cartProd != null){
+            cartProd.setQuantity(cartProd.getQuantity() + 1);
+            productRepository.updateProduct(cartProd);
+        }
+        else{
+            productRepository.insertProduct(product);
+        }
 
     }
 

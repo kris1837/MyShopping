@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -74,11 +75,15 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
             public void onChanged(@Nullable List<Product> products) {
                 //add to recycler view - Alibi
                 productArrayList = products;
-                CartAdapter adapter = new CartAdapter();
-                adapter.setmProducts(products);
-                adapter.setListener(listener);
-
-                recyclerView.setAdapter(adapter);
+                CartAdapter adr = (CartAdapter) recyclerView.getAdapter();
+                if (adr == null) {
+                    adr = new CartAdapter();
+                    adr.setmProducts(productArrayList);
+                    adr.setListener(listener);
+                    recyclerView.setAdapter(adr);
+                }else{
+                    adr.setmProducts(productArrayList);
+                }
             }
         });
 
@@ -117,7 +122,7 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
 
     private void doSearch(String queryStr) {
         Toast.makeText(this, queryStr, Toast.LENGTH_LONG).show();
-        Log.i("Your search: ",queryStr);
+        Log.i("Your search: ", queryStr);
     }
 
 
@@ -129,10 +134,10 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
 
     @Override
     public void onMinusButtonClick(Product product) {
-        if(product.getQuantity() > 1){
+        if (product.getQuantity() > 1) {
             product.setQuantity(product.getQuantity() - 1);
             productRepository.updateProduct(product);
-        }else{
+        } else {
             productRepository.deleteProduct(product);
         }
     }
