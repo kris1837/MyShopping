@@ -28,6 +28,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import kz.shag.myshopping.adapters.CartAdapter;
@@ -54,6 +55,20 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BottomNavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_home: {
+
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
 
         recyclerView = findViewById(R.id.recyclerView);
 
