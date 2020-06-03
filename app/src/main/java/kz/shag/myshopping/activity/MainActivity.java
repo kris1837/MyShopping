@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
@@ -15,10 +16,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import kz.shag.myshopping.adapters.CartAdapter;
 import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
-import kz.shag.myshopping.entity.Purchase;
 import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.ProductRepository;
 
@@ -48,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
     private final String TAG = "MainActivity";
 
     List<Product> products = new ArrayList<Product>();
+    private ProductAdapter productAdapter;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -55,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //for what ???
         BottomNavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -86,16 +82,16 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
                         products.addAll(productsFromDb);
                         Log.d(TAG, "onSuccess: " + products.get(0).getTitle());
 
-                        ProductAdapter productAdapter = new ProductAdapter(products, this);
+                        productAdapter = new ProductAdapter(products, this);
                         recyclerView.setAdapter(productAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(this));
                     }
                 });
-
+        //local db repository
         if (productRepository == null) {
             productRepository = new ProductRepository(this);
         }
-
+        //get product in cart from local DB
         LiveData<List<Product>> liveData = productRepository.getAllProducts();
         liveData.observe(this, new Observer<List<Product>>() {
             @Override
@@ -104,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
             }
         });
     }
-
+    //buy btn
     @Override
     public void onClick(Product product) {
         Product cartProd = null;
@@ -135,28 +131,44 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         getMenuInflater().inflate(R.menu.toolbar, menu);
 
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
+        MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        return true;
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            if (searchManager != null) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+            }
+        }
+        searchView.setQueryHint("Enter product name");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                productAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                doSearch(SearchManager.QUERY);
-                break;
             case R.id.action_bin:
                 NavigationHelper.goToCart(MainActivity.this);
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void handleIntent(Intent intent) {
@@ -174,8 +186,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
     }
 
     private void doSearch(String queryStr) {
-        Toast.makeText(this, queryStr, Toast.LENGTH_LONG).show();
-        Log.i("Your search: ", queryStr);
+
     }
 
 }
