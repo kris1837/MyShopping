@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,18 +37,12 @@ import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
 import kz.shag.myshopping.entity.Purchase;
+import kz.shag.myshopping.fragments.HistoryFragment;
+import kz.shag.myshopping.fragments.MainFragment;
 import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.ProductRepository;
 
-public class MainActivity extends AppCompatActivity implements IProductClickListener {
-
-    RecyclerView recyclerView;
-    private ProductRepository productRepository;
-    private List<Product> mProducts;
-
-    private final String TAG = "MainActivity";
-
-    List<Product> products = new ArrayList<Product>();
+public class MainActivity extends AppCompatActivity{
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -60,9 +55,14 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment fragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_home: {
-
+                        fragment = new MainFragment();
+                        break;
+                    }
+                    case R.id.navigation_basket:{
+                        fragment = new HistoryFragment();
                         break;
                     }
                 }
@@ -70,64 +70,14 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
             }
         });
 
-        recyclerView = findViewById(R.id.recyclerView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Товары");
         toolbar.setSubtitleTextColor(R.color.white);
         setSupportActionBar(toolbar);
-
-        //data from Firebase
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("products").get()
-                .addOnSuccessListener(documentSnapshots -> {
-                    if (!documentSnapshots.isEmpty()) {
-                        List<Product> productsFromDb = documentSnapshots.toObjects(Product.class);
-                        products.addAll(productsFromDb);
-                        Log.d(TAG, "onSuccess: " + products.get(0).getTitle());
-
-                        ProductAdapter productAdapter = new ProductAdapter(products, this);
-                        recyclerView.setAdapter(productAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                    }
-                });
-
-        if (productRepository == null) {
-            productRepository = new ProductRepository(this);
-        }
-
-        LiveData<List<Product>> liveData = productRepository.getAllProducts();
-        liveData.observe(this, new Observer<List<Product>>() {
-            @Override
-            public void onChanged(List<Product> products) {
-                mProducts = products;
-            }
-        });
     }
 
-    @Override
-    public void onClick(Product product) {
-        Product cartProd = null;
-        for (int i =0; i< mProducts.size(); i++){
-            if(product.getId() == mProducts.get(i).getId()){
-                cartProd = mProducts.get(i);
-                break;
-            }
-        }
 
-        if(cartProd != null){
-            int count = cartProd.getQuantity();
-            cartProd.setQuantity(count + 1);
-            productRepository.updateProduct(cartProd);
-        } else {
-            int count = product.getQuantity();
-            if(count != 1){
-                product.setQuantity( 1 );
-            }
-            productRepository.insertProduct(product);
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
