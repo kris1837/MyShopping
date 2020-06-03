@@ -63,9 +63,6 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         setSupportActionBar(toolbar);
 
         //data from Firebase
-
-        getProducts();
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("products").get()
                 .addOnSuccessListener(documentSnapshots -> {
@@ -79,21 +76,6 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
                         recyclerView.setLayoutManager(new LinearLayoutManager(this));
                     }
                 });
-
-//        products.add(new Product(1, "A", "Description", 2.3, "none", 3));
-//        products.add(new Product(2, "B", "Description", 2.3, "none", 3));
-//        products.add(new Product(3, "C", "Description", 2.3, "none", 3));
-//        products.add(new Product(4, "D", "Description", 2.3, "none", 3));
-//        products.add(new Product(5, "E", "Description", 2.3, "none", 3));
-//        products.add(new Product(6, "F", "Description", 2.3, "none", 3));
-//        products.add(new Product(7, "G", "Description", 2.3, "none", 3));
-//        products.add(new Product(8, "H", "Description", 2.3, "none", 3));
-        //
-
-
-/*
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.activity_main);*/
 
         if (productRepository == null) {
             productRepository = new ProductRepository(this);
@@ -122,8 +104,7 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
             int count = cartProd.getQuantity();
             cartProd.setQuantity(count + 1);
             productRepository.updateProduct(cartProd);
-        }
-        else{
+        } else {
             int count = product.getQuantity();
             if(count != 1){
                 product.setQuantity( 1 );
@@ -150,13 +131,11 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_search:
                 doSearch(SearchManager.QUERY);
                 break;
             case R.id.action_bin:
-                final Activity activity = this;
                 NavigationHelper.goToCart(MainActivity.this);
             default:
                 return super.onOptionsItemSelected(item);
@@ -184,7 +163,4 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
         Log.i("Your search: ", queryStr);
     }
 
-    private void getProducts() {
-
-    }
 }

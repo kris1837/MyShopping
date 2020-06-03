@@ -47,6 +47,7 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
+
         final RecyclerView recyclerView = findViewById(R.id.rvCart);
         Button purchaseBtn = findViewById(R.id.purchaseBtn);
         purchaseBtn.setOnClickListener(this);
@@ -70,7 +71,6 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
         recyclerView.setHasFixedSize(true);
 
         liveData.observe(this, new Observer<List<Product>>() {
-
             @Override
             public void onChanged(@Nullable List<Product> products) {
                 //add to recycler view - Alibi
@@ -79,15 +79,13 @@ public class CartActivity extends AppCompatActivity implements OnCartAdapterEven
                 if (adr == null) {
                     adr = new CartAdapter();
                     adr.setmProducts(productArrayList);
-                    adr.setListener(listener);
+                    adr.setListener(CartActivity.this);
                     recyclerView.setAdapter(adr);
                 }else{
                     adr.setmProducts(productArrayList);
                 }
             }
         });
-
-
     }
 
     @Override
