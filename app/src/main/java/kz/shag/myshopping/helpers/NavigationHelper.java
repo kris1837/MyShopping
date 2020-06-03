@@ -18,6 +18,8 @@ import kz.shag.myshopping.activity.CartActivity;
 import kz.shag.myshopping.activity.MainActivity;
 import kz.shag.myshopping.activity.ProductActivity;
 import kz.shag.myshopping.activity.PurchaseDataActivity;
+import kz.shag.myshopping.activity.SignInActivity;
+import kz.shag.myshopping.activity.SignUpActivity;
 import kz.shag.myshopping.entity.Product;
 
 import static androidx.core.content.ContextCompat.startActivity;
@@ -42,6 +44,16 @@ public class NavigationHelper {
     public static void goToProductActivity(AppCompatActivity context, Product product) {
         Intent intent = new Intent(context, PurchaseDataActivity.class);
         intent.putExtra("product", (Parcelable) product);
+        context.startActivity(intent);
+    }
+
+    public static void goToSignInActivity(AppCompatActivity context) {
+        Intent intent = new Intent(context, SignInActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void goToSignUpActivity(AppCompatActivity context) {
+        Intent intent = new Intent(context, SignUpActivity.class);
         context.startActivity(intent);
     }
 }
