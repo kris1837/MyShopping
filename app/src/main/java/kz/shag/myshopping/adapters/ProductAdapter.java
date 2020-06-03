@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,13 +24,13 @@ import kz.shag.myshopping.activity.MainActivity;
 import kz.shag.myshopping.activity.ProductActivity;
 import kz.shag.myshopping.entity.Product;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> implements Filterable {
 
     Context context;
     List<Product> products;
     IProductClickListener callback;
 
-    public ProductAdapter(List<Product> products,IProductClickListener callback){
+    public ProductAdapter(List<Product> products, IProductClickListener callback) {
         this.products = products;
         this.callback = callback;
     }
@@ -38,7 +40,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.row,parent,false);
+        View view = inflater.inflate(R.layout.row, parent, false);
 
         return new ViewHolder(view);
     }
@@ -63,9 +65,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return products.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return productsFilter;
+    }
+
+    private Filter productsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            return null;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+        }
+    };
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameTextView,priceTextView;
+        TextView nameTextView, priceTextView;
         Button buyButton;
         ImageView productImageView;
 
