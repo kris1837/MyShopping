@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -19,6 +22,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import kz.shag.myshopping.R;
+import kz.shag.myshopping.di.AppModule;
+import kz.shag.myshopping.di.DaggerAppComponent;
 import kz.shag.myshopping.fragments.HistoryFragment;
 import kz.shag.myshopping.fragments.InfoFragment;
 import kz.shag.myshopping.fragments.MainFragment;
@@ -27,7 +32,8 @@ import kz.shag.myshopping.helpers.NavigationHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    @Inject
+    SharedPreferences preferences;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -36,8 +42,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DaggerAppComponent.builder()
+                .appModule(new AppModule(getApplication()))
+                .build().inject(this);
+
         Fragment fragment = new MainFragment();
         setFragment(fragment);
+
+        String address = preferences.getString("Address", "");
 
         BottomNavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
