@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,11 +40,15 @@ import kz.shag.myshopping.R;
 import kz.shag.myshopping.entity.Product;
 import kz.shag.myshopping.entity.Purchase;
 import kz.shag.myshopping.fragments.HistoryFragment;
+import kz.shag.myshopping.fragments.InfoFragment;
 import kz.shag.myshopping.fragments.MainFragment;
+import kz.shag.myshopping.fragments.ProfileFragment;
 import kz.shag.myshopping.helpers.NavigationHelper;
 import kz.shag.myshopping.localDB.ProductRepository;
 
 public class MainActivity extends AppCompatActivity{
+
+    private FrameLayout _frameLayout;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -52,17 +58,29 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navigationView = findViewById(R.id.nav_view);
+        _frameLayout = findViewById(R.id.uiFragmentHolder);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_home: {
-                        fragment = new MainFragment();
+                        Fragment fragment = new MainFragment();
+                        setFragment(fragment);
                         break;
                     }
-                    case R.id.navigation_basket:{
-                        fragment = new HistoryFragment();
+                    case R.id.navigation_history:{
+                        Fragment fragment = new HistoryFragment();
+                        setFragment(fragment);
+                        break;
+                    }
+                    case R.id.navigation_info: {
+                        Fragment fragment = new InfoFragment();
+                        setFragment(fragment);
+                        break;
+                    }
+                    case R.id.navigation_profile:{
+                        Fragment fragment = new ProfileFragment();
+                        setFragment(fragment);
                         break;
                     }
                 }
@@ -70,14 +88,11 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Товары");
         toolbar.setSubtitleTextColor(R.color.white);
         setSupportActionBar(toolbar);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,6 +107,12 @@ public class MainActivity extends AppCompatActivity{
                 .getSearchableInfo(getComponentName()));
 
         return true;
+    }
+
+    private void setFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.uiFragmentHolder,fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
