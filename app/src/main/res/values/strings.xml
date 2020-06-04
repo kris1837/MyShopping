@@ -13,5 +13,5 @@
     <string name="title_history">History</string>
     <string name="title_settings">Profile</string>
 
-
+<string name="search_hint">Enter product name</string>
 </resources>

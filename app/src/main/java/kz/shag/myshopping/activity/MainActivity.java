@@ -94,6 +94,12 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
     }
 
+    private void setFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.uiFragmentHolder,fragment);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -106,13 +112,29 @@ public class MainActivity extends AppCompatActivity{
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
 
-        return true;
-    }
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            if (searchManager != null) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+            }
+        }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                productAdapter.getFilter().filter(query);
+                return false;
+            }
 
-    private void setFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.uiFragmentHolder,fragment);
-        fragmentTransaction.commit();
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                productAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
     }
 
     @Override

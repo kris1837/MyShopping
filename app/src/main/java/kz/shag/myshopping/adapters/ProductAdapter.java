@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kz.shag.myshopping.R;
@@ -28,10 +29,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     Context context;
     List<Product> products;
+    List<Product> filteredProducts;
     IProductClickListener callback;
 
     public ProductAdapter(List<Product> products, IProductClickListener callback) {
         this.products = products;
+        this.filteredProducts = products;
         this.callback = callback;
     }
 
@@ -48,39 +51,56 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Product product = products.get(position);
-        holder.priceTextView.setText(Double.toString(products.get(position).getCost()));
-        holder.nameTextView.setText(products.get(position).getTitle());
+        final Product product = filteredProducts.get(position);
+        holder.priceTextView.setText(Double.toString(product.getCost()));
+        holder.nameTextView.setText(product.getTitle());
         holder.buyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 callback.onClick(product);
             }
         });
 
-        Glide.with(context).load(products.get(position).getImageUrl()).into(holder.productImageView);
+        Glide.with(context).load(product.getImageUrl()).into(holder.productImageView);
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return filteredProducts.size();
     }
 
     @Override
     public Filter getFilter() {
-        return productsFilter;
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (charString.isEmpty()) {
+                    filteredProducts = products;
+                } else {
+                    List<Product> filteredList = new ArrayList<>();
+                    for (Product row : products) {
+                        // here we are looking for name
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    filteredProducts = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredProducts;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredProducts = (List<Product>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
-    private Filter productsFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            return null;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-
-        }
-    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
