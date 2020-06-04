@@ -9,7 +9,7 @@
         android:title="@string/action_search"
         android:icon="@drawable/search"
         myApp:showAsAction="always"
-        myApp:actionViewClass="android.widget.SearchView" />
+        myApp:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
         android:id="@+id/action_bin"
         android:title="@string/action_bin"

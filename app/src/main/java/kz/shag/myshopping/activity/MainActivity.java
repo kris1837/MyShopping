@@ -144,21 +144,20 @@ public class MainActivity extends AppCompatActivity implements IProductClickList
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
             }
         }
-        searchView.setQueryHint("Enter product name");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
+                productAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 productAdapter.getFilter().filter(newText);
-                return true;
+                return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
