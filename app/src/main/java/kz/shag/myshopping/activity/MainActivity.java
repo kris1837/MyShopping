@@ -1,13 +1,6 @@
 package kz.shag.myshopping.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -15,40 +8,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.SearchView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import kz.shag.myshopping.adapters.CartAdapter;
-import kz.shag.myshopping.adapters.ProductAdapter;
 import kz.shag.myshopping.R;
-import kz.shag.myshopping.entity.Product;
-import kz.shag.myshopping.entity.Purchase;
 import kz.shag.myshopping.fragments.HistoryFragment;
 import kz.shag.myshopping.fragments.InfoFragment;
 import kz.shag.myshopping.fragments.MainFragment;
 import kz.shag.myshopping.fragments.ProfileFragment;
 import kz.shag.myshopping.helpers.NavigationHelper;
-import kz.shag.myshopping.localDB.ProductRepository;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
-    private FrameLayout _frameLayout;
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -57,8 +36,10 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Fragment fragment = new MainFragment();
+        setFragment(fragment);
+
         BottomNavigationView navigationView = findViewById(R.id.nav_view);
-        _frameLayout = findViewById(R.id.uiFragmentHolder);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -68,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
                         setFragment(fragment);
                         break;
                     }
-                    case R.id.navigation_history:{
+                    case R.id.navigation_history: {
                         Fragment fragment = new HistoryFragment();
                         setFragment(fragment);
                         break;
@@ -78,7 +59,7 @@ public class MainActivity extends AppCompatActivity{
                         setFragment(fragment);
                         break;
                     }
-                    case R.id.navigation_profile:{
+                    case R.id.navigation_profile: {
                         Fragment fragment = new ProfileFragment();
                         setFragment(fragment);
                         break;
@@ -94,23 +75,21 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
     }
 
-    private void setFragment(Fragment fragment){
+    private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.uiFragmentHolder,fragment);
+        fragmentTransaction.replace(R.id.uiFragmentHolder, fragment);
         fragmentTransaction.commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        //Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar, menu);
 
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = null;
         if (searchItem != null) {
@@ -124,13 +103,19 @@ public class MainActivity extends AppCompatActivity{
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                productAdapter.getFilter().filter(query);
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.uiFragmentHolder);
+                if (fragment instanceof MainFragment) {
+                    ((MainFragment) fragment).setSearch(query);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                productAdapter.getFilter().filter(newText);
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.uiFragmentHolder);
+                if (fragment instanceof MainFragment) {
+                    ((MainFragment) fragment).setSearch(newText);
+                }
                 return false;
             }
         });

@@ -33,6 +33,8 @@ public class MainFragment extends Fragment implements IProductClickListener {
     private ProductRepository productRepository;
     private List<Product> mProducts;
 
+    private ProductAdapter productAdapter;
+
     private final String TAG = "MainActivity";
 
     List<Product> products = new ArrayList<Product>();
@@ -56,7 +58,7 @@ public class MainFragment extends Fragment implements IProductClickListener {
                         products.addAll(productsFromDb);
                         Log.d(TAG, "onSuccess: " + products.get(0).getTitle());
 
-                        ProductAdapter productAdapter = new ProductAdapter(products, this);
+                        productAdapter = new ProductAdapter(products, this);
                         recyclerView.setAdapter(productAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     }
@@ -73,6 +75,10 @@ public class MainFragment extends Fragment implements IProductClickListener {
                 mProducts = products;
             }
         });
+    }
+
+    public void setSearch(CharSequence sequence) {
+        productAdapter.getFilter().filter(sequence);
     }
 
     @Override
