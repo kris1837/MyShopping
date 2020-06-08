@@ -58,21 +58,25 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_home: {
                         Fragment fragment = new MainFragment();
+                        getSupportActionBar().show();
                         setFragment(fragment);
                         break;
                     }
                     case R.id.navigation_history: {
                         Fragment fragment = new HistoryFragment();
+                        getSupportActionBar().hide();
                         setFragment(fragment);
                         break;
                     }
                     case R.id.navigation_info: {
                         Fragment fragment = new InfoFragment();
+                        getSupportActionBar().hide();
                         setFragment(fragment);
                         break;
                     }
                     case R.id.navigation_profile: {
                         Fragment fragment = new ProfileFragment();
+                        getSupportActionBar().hide();
                         setFragment(fragment);
                         break;
                     }
