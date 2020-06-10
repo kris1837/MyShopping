@@ -27,4 +27,6 @@ public class MyShoppingApplication extends Application {
     public AppComponent getComponent(){
         return applicationComponent;
     }
+
+
 }
